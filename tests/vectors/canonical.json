@@ -1,0 +1,42 @@
+{
+  "description": "Canonical test vectors for kr24.v1",
+  "version": "kr24.v1",
+  "vectors": [
+    {
+      "name": "simple object",
+      "input": {"a": 1, "b": 2, "c": "test"},
+      "canonical": "kr24.v1|{\"a\":1,\"b\":2,\"c\":\"test\"}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "key order invariance",
+      "input": {"z": 1, "a": 2, "m": 3},
+      "canonical": "kr24.v1|{\"a\":2,\"m\":3,\"z\":1}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "nested object",
+      "input": {"outer": {"inner": {"value": 42}}, "list": [1, 2, 3]},
+      "canonical": "kr24.v1|{\"list\":[1,2,3],\"outer\":{\"inner\":{\"value\":42}}}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "array order matters",
+      "input": {"items": [3, 1, 2]},
+      "canonical": "kr24.v1|{\"items\":[3,1,2]}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "quantity alteration 1000->900",
+      "input": {"cantidad": 1000, "pedimento": "25 47 3711 5001987", "fecha": "2025-05-04"},
+      "canonical": "kr24.v1|{\"cantidad\":1000,\"fecha\":\"2025-05-04\",\"pedimento\":\"25 47 3711 5001987\"}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "date change",
+      "input": {"fechaPago": "2025-05-04", "pedimento": "25 47 3711 5001987"},
+      "canonical": "kr24.v1|{\"fechaPago\":\"2025-05-04\",\"pedimento\":\"25 47 3711 5001987\"}",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

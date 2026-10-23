@@ -78,6 +78,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
         Bitácora
       </button>
+      <button data-view="integridad">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 9v4M12 17h.01"/></svg>
+        Integridad
+      </button>
     </nav>
     <div class="side-foot">
       <div class="company-pick">
@@ -646,6 +650,106 @@
         </div>
       </section>
 
+      <!-- ===================== INTEGRIDAD ===================== -->
+      <section class="view" id="view-integridad" hidden aria-labelledby="t-int">
+        <div class="main-inner">
+          <div class="topbar">
+            <div>
+              <h1 id="t-int">Inspector de Integridad Documental</h1>
+              <span class="eyebrow">SHA-256 · Canonical JSON · Diff · Explain · Anchor (Devnet)</span>
+            </div>
+            <div class="actions">
+              <button class="btn small" id="btnIntegrityReset">Limpiar</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-h"><h2>1. Cargar documentos</h2><span class="muted small">Arrastre o seleccione el archivo original y, opcionalmente, el comparado. Soporta JSON, CSV, TXT, PDF (hash solo).</span></div>
+            <div class="card-b">
+              <div class="drop-zone" id="integrity-drop" tabindex="0" role="button" aria-label="Área de carga de archivos">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:48px;height:48px;margin:0 auto 8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                <div class="drop-text">
+                  <strong>Suelte archivos aquí</strong> o haga clic para seleccionar
+                  <input type="file" id="integrity-file" accept=".json,.csv,.txt,.pdf" multiple hidden>
+                </div>
+              </div>
+              <div class="file-labels">
+                <div id="integrity-orig-label" class="file-label">Original: —</div>
+                <div id="integrity-comp-label" class="file-label">Comparado: — (solo hash original)</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="integrity-status" class="status-bar" hidden></div>
+
+          <div class="card" id="integrity-actions" hidden>
+            <div class="card-h"><h2>2. Acciones</h2></div>
+            <div class="card-b actions-row">
+              <button class="btn primary" id="btn-integrity-compare">Calcular hash y diff</button>
+              <button class="btn" id="btn-integrity-explain">Ver explicación</button>
+              <button class="btn" id="btn-integrity-download">Descargar manifiesto JSON</button>
+              <div class="anchor-group">
+                <label class="small">Anclaje<select id="integrity-anchor-mode">
+                  <option value="dry-run">Dry-run (simulado)</option>
+                  <option value="phantom">Phantom wallet (Devnet)</option>
+                </select></label>
+                <button class="btn" id="btn-integrity-anchor">Anclar hash</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="integrity-error" class="alert error" hidden></div>
+
+          <div class="card" id="integrity-result" hidden>
+            <div class="card-h"><h2>3. Resultado</h2><span class="badge" id="integrity-match-badge"></span></div>
+            <div class="card-b">
+              <div class="grid-2">
+                <div>
+                  <h4>Original</h4>
+                  <div class="hash-row"><span class="k">Canonical SHA-256</span><span class="v mono" id="integrity-hash-orig">—</span></div>
+                  <div class="hash-row"><span class="k">Bytes SHA-256</span><span class="v mono" id="integrity-hash-bytes-orig">—</span></div>
+                  <div class="hash-row"><span class="k">Formato</span><span class="v" id="integrity-format-orig">—</span></div>
+                </div>
+                <div>
+                  <h4>Comparado</h4>
+                  <div class="hash-row"><span class="k">Canonical SHA-256</span><span class="v mono" id="integrity-hash-comp">—</span></div>
+                  <div class="hash-row"><span class="k">Bytes SHA-256</span><span class="v mono" id="integrity-hash-bytes-comp">—</span></div>
+                  <div class="hash-row"><span class="k">Formato</span><span class="v" id="integrity-format-comp">—</span></div>
+                </div>
+              </div>
+
+              <h4>Diferencias detectadas</h4>
+              <div class="table-wrap"><table>
+                <thead><tr><th>Campo</th><th>Tipo</th><th>Severidad</th><th>Valor original</th><th>Valor nuevo</th></tr></thead>
+                <tbody id="integrity-diff-tbody"></tbody>
+              </table></div>
+
+              <div class="diff-counts">
+                <span class="pill crit"><span class="dot"></span><b id="integrity-count-critical">0</b> críticas</span>
+                <span class="pill warn"><span class="dot"></span><b id="integrity-count-warning">0</b> advertencias</span>
+                <span class="pill info"><span class="dot"></span><b id="integrity-count-info">0</b> informativas</span>
+              </div>
+
+              <details class="fold">
+                <summary>Explicación (motor local kr24.v1)</summary>
+                <pre id="integrity-explanation" class="muted small" hidden></pre>
+              </details>
+
+              <details class="fold">
+                <summary>Manifiesto de integridad</summary>
+                <div class="hash-row"><span class="k">Manifest SHA-256</span><span class="v mono" id="integrity-manifest-hash">—</span></div>
+                <button class="btn small" id="btn-integrity-download" style="margin-top:8px">Descargar manifiesto JSON</button>
+              </details>
+
+              <details class="fold">
+                <summary>Anclaje Solana Devnet</summary>
+                <div id="integrity-anchor-result" hidden></div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 </div>
@@ -726,6 +830,6 @@
 </div>
 
 <div class="tip" id="tipAi" role="tooltip" hidden>El número es el índice de cumplimiento, de 0 a 100: baja con cada lote por vencer, cada diferencia SAT vs. agente sin resolver y el cierre sin firmar. Métron lo mide para la razón social elegida (o el consolidado) y responde con las cifras del registro. Demo: conecta la IA que tenga tu equipo (Gemini, ChatGPT, Claude u otra compatible). En una empresa, usen la IA que aprobó su área de TI y seguridad. En producción la clave nunca va en el navegador: va en un servidor.</div>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 
 </body></html>

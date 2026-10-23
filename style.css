@@ -1,14 +1,284 @@
-/* Layout: sidebar de navegación + área de trabajo; panel táctico arriba (riesgo → predicción → alertas → lotes). */
-/* Paleta sobria "Aduana": tinta azul marino, cobalto como acción, naranja/coral solo para riesgo (sin rojo-verde). */
+/* ============================================================
+   KRATOS-Anexo24 — Design System (KONTROL24 tokens + KRATOS semantics)
+   Material Design 3 inspired color system with semantic risk tokens.
+   Fonts: Inter (body), JetBrains Mono (data), Plus Jakarta Sans (display).
+   ============================================================ */
+
+/* ---------- Light Theme (default) ---------- */
 :root {
-  --paper: #f4f5f7; --surface: #ffffff; --surface-2: #f1f3f6; --ink: #121826; --muted: #5a6273; --line: #e1e4ea; --accent: #2348c9; --accent-ink: #ffffff; --accent-soft: #e8edfb; --crit: #c2372b; --crit-soft: #fbeae8; --warn: #c2620a; --warn-soft: #fcefe2; --watch: #8c6d00; --watch-soft: #f5efd6; --ok: #0f7a84; --ok-soft: #e0f1f2; --shadow: 0 1px 2px rgba(18,24,38,.05), 0 10px 30px rgba(18,24,38,.06);
-  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
-  --f-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* --- Color: Surface System (Material 3) --- */
+  --sys-bg: #f4f5f7;                    /* background */
+  --sys-surface: #ffffff;               /* surface */
+  --sys-surface-variant: #f1f3f6;       /* surface-variant / surface-2 */
+  --sys-surface-container: #e8ecf1;     /* surface-container-low */
+  --sys-surface-container-high: #dfe3eb; /* surface-container-high */
+  --sys-surface-container-highest: #d6dae2; /* surface-container-highest */
+  --sys-on-surface: #121826;            /* on-surface */
+  --sys-on-surface-variant: #5a6273;    /* on-surface-variant */
+  --sys-outline: #e1e4ea;               /* outline */
+  --sys-outline-variant: #c9cdd6;       /* outline-variant */
+
+  /* --- Color: Primary (Indigo/Cobalt) --- */
+  --sys-primary: #2348c9;               /* primary */
+  --sys-on-primary: #ffffff;            /* on-primary */
+  --sys-primary-container: #e8edfb;     /* primary-container */
+  --sys-on-primary-container: #1a2c8a;  /* on-primary-container */
+
+  /* --- Color: Secondary (Muted Indigo) --- */
+  --sys-secondary: #4b41e1;             /* secondary */
+  --sys-on-secondary: #ffffff;
+  --sys-secondary-container: #e8e7fb;
+  --sys-on-secondary-container: #2e288c;
+
+  /* --- Color: Tertiary / Success (Teal) --- */
+  --sys-tertiary: #0f7a84;              /* tertiary */
+  --sys-on-tertiary: #ffffff;
+  --sys-tertiary-container: #e0f1f2;
+  --sys-on-tertiary-container: #005e66;
+
+  /* --- Color: Error / Critical (Red) --- */
+  --sys-error: #c2372b;                 /* error */
+  --sys-on-error: #ffffff;
+  --sys-error-container: #fbeae8;
+  --sys-on-error-container: #8a1a14;
+
+  /* --- Color: Warning (Amber) --- */
+  --sys-warning: #c2620a;               /* warning */
+  --sys-on-warning: #ffffff;
+  --sys-warning-container: #fcefe2;
+  --sys-on-warning-container: #8a4000;
+
+  /* --- KRATOS Semantic Risk Tokens (map to sys colors) --- */
+  --ink: var(--sys-on-surface);                    /* #121826 */
+  --muted: var(--sys-on-surface-variant);          /* #5a6273 */
+  --line: var(--sys-outline);                       /* #e1e4ea */
+  --paper: var(--sys-bg);                           /* #f4f5f7 */
+  --surface: var(--sys-surface);                    /* #ffffff */
+  --surface-2: var(--sys-surface-variant);          /* #f1f3f6 */
+  --accent: var(--sys-primary);                     /* #2348c9 */
+  --accent-ink: var(--sys-on-primary);              /* #ffffff */
+  --accent-soft: var(--sys-primary-container);      /* #e8edfb */
+
+  /* Critical / Warning / Watch / OK (semantic, not renamed) */
+  --crit: var(--sys-error);                         /* #c2372b */
+  --crit-soft: var(--sys-error-container);          /* #fbeae8 */
+  --warn: var(--sys-warning);                       /* #c2620a */
+  --warn-soft: var(--sys-warning-container);        /* #fcefe2 */
+  --watch: #8c6d00;                                 /* keep KRATOS watch */
+  --watch-soft: #f5efd6;
+  --ok: var(--sys-tertiary);                        /* #0f7a84 */
+  --ok-soft: var(--sys-tertiary-container);         /* #e0f1f2 */
+
+  /* --- Shadows --- */
+  --shadow-xs: 0 1px 2px rgba(18,24,38,0.05);
+  --shadow-sm: 0 1px 3px rgba(18,24,38,0.08), 0 1px 2px rgba(18,24,38,0.06);
+  --shadow-md: 0 4px 12px rgba(18,24,38,0.1), 0 2px 4px rgba(18,24,38,0.06);
+  --shadow-lg: 0 10px 30px rgba(18,24,38,0.12), 0 4px 8px rgba(18,24,38,0.08);
+  --shadow-xl: 0 20px 40px rgba(18,24,38,0.15);
+  --shadow: var(--shadow-sm), var(--shadow-md);    /* default card shadow */
+
+  /* --- Typography --- */
+  --f-display: "Plus Jakarta Sans", "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Inter", "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --r: 12px;
+
+  /* --- Spacing Scale (4px base) --- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Semantic spacing aliases */
+  --space-xs: var(--space-1);
+  --space-sm: var(--space-2);
+  --space-md: var(--space-3);
+  --space-lg: var(--space-4);
+  --space-xl: var(--space-6);
+  --space-2xl: var(--space-8);
+
+  /* Layout spacing */
+  --gutter: var(--space-4);
+  --margin: var(--space-6);
+  --margin-mobile: var(--space-4);
+
+  /* --- Border Radius --- */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-2xl: 24px;
+  --r-full: 9999px;
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* --- Z-Index Scale --- */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-modal-backdrop: 40;
+  --z-modal: 41;
+  --z-toast: 60;
+  --z-tooltip: 90;
+  --z-intro: 100;
+
+  /* --- Border Radius (legacy alias) --- */
+  --r: var(--r-lg);              /* 12px */
+
+  /* --- Fonts --- */
+  --f-display: "Plus Jakarta Sans", "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Inter", "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0a0f1a; --surface: #111827; --surface-2: #161f33; --ink: #e7eaf0; --muted: #97a1b5; --line: #232d42; --accent: #7c9bff; --accent-ink: #0a0f1a; --accent-soft: #1c2748; --crit: #ff7466; --crit-soft: #3a1a1a; --warn: #ff9f4a; --warn-soft: #3a2614; --watch: #e0bf4e; --watch-soft: #2f2a14; --ok: #46c7d0; --ok-soft: #0f2e33; --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.3); color-scheme: dark; } }
-:root[data-theme="dark"] { --paper: #0a0f1a; --surface: #111827; --surface-2: #161f33; --ink: #e7eaf0; --muted: #97a1b5; --line: #232d42; --accent: #7c9bff; --accent-ink: #0a0f1a; --accent-soft: #1c2748; --crit: #ff7466; --crit-soft: #3a1a1a; --warn: #ff9f4a; --warn-soft: #3a2614; --watch: #e0bf4e; --watch-soft: #2f2a14; --ok: #46c7d0; --ok-soft: #0f2e33; --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.3); color-scheme: dark; }
+
+/* ---------- Dark Theme ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* --- Color: Surface System (Dark) --- */
+    --sys-bg: #0a0f1a;
+    --sys-surface: #111827;
+    --sys-surface-variant: #161f33;
+    --sys-surface-container: #1a2338;
+    --sys-surface-container-high: #1f2a44;
+    --sys-surface-container-highest: #243052;
+    --sys-on-surface: #e7eaf0;
+    --sys-on-surface-variant: #97a1b5;
+    --sys-outline: #232d42;
+    --sys-outline-variant: #3a4560;
+
+    /* --- Color: Primary (Light Indigo) --- */
+    --sys-primary: #7c9bff;
+    --sys-on-primary: #0a0f1a;
+    --sys-primary-container: #1c2748;
+    --sys-on-primary-container: #d6e0ff;
+
+    /* --- Color: Secondary --- */
+    --sys-secondary: #b4adff;
+    --sys-on-secondary: #0a0f1a;
+    --sys-secondary-container: #2e288c;
+    --sys-on-secondary-container: #e8e7fb;
+
+    /* --- Color: Tertiary / Success --- */
+    --sys-tertiary: #46c7d0;
+    --sys-on-tertiary: #0a0f1a;
+    --sys-tertiary-container: #0f2e33;
+    --sys-on-tertiary-container: #d0f5fa;
+
+    /* --- Color: Error --- */
+    --sys-error: #ff7466;
+    --sys-on-error: #0a0f1a;
+    --sys-error-container: #3a1a1a;
+    --sys-on-error-container: #ffcaca;
+
+    /* --- Color: Warning --- */
+    --sys-warning: #ff9f4a;
+    --sys-on-warning: #0a0f1a;
+    --sys-warning-container: #3a2614;
+    --sys-on-warning-container: #ffe0b3;
+
+    /* --- KRATOS Semantic (auto-map via sys) --- */
+    --ink: var(--sys-on-surface);
+    --muted: var(--sys-on-surface-variant);
+    --line: var(--sys-outline);
+    --paper: var(--sys-bg);
+    --surface: var(--sys-surface);
+    --surface-2: var(--sys-surface-variant);
+    --accent: var(--sys-primary);
+    --accent-ink: var(--sys-on-primary);
+    --accent-soft: var(--sys-primary-container);
+
+    --crit: var(--sys-error);
+    --crit-soft: var(--sys-error-container);
+    --warn: var(--sys-warning);
+    --warn-soft: var(--sys-warning-container);
+    --watch: #e0bf4e;
+    --watch-soft: #2f2a14;
+    --ok: var(--sys-tertiary);
+    --ok-soft: var(--sys-tertiary-container);
+
+    /* --- Shadows (Dark) --- */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.35);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.55);
+    --shadow: var(--shadow-sm), var(--shadow-md);
+
+    color-scheme: dark;
+  }
+}
+
+/* Explicit dark mode toggle */
+:root[data-theme="dark"] {
+  --sys-bg: #0a0f1a;
+  --sys-surface: #111827;
+  --sys-surface-variant: #161f33;
+  --sys-surface-container: #1a2338;
+  --sys-surface-container-high: #1f2a44;
+  --sys-surface-container-highest: #243052;
+  --sys-on-surface: #e7eaf0;
+  --sys-on-surface-variant: #97a1b5;
+  --sys-outline: #232d42;
+  --sys-outline-variant: #3a4560;
+  --sys-primary: #7c9bff;
+  --sys-on-primary: #0a0f1a;
+  --sys-primary-container: #1c2748;
+  --sys-on-primary-container: #d6e0ff;
+  --sys-secondary: #b4adff;
+  --sys-on-secondary: #0a0f1a;
+  --sys-secondary-container: #2e288c;
+  --sys-on-secondary-container: #e8e7fb;
+  --sys-tertiary: #46c7d0;
+  --sys-on-tertiary: #0a0f1a;
+  --sys-tertiary-container: #0f2e33;
+  --sys-on-tertiary-container: #d0f5fa;
+  --sys-error: #ff7466;
+  --sys-on-error: #0a0f1a;
+  --sys-error-container: #3a1a1a;
+  --sys-on-error-container: #ffcaca;
+  --sys-warning: #ff9f4a;
+  --sys-on-warning: #0a0f1a;
+  --sys-warning-container: #3a2614;
+  --sys-on-warning-container: #ffe0b3;
+
+  --ink: var(--sys-on-surface);
+  --muted: var(--sys-on-surface-variant);
+  --line: var(--sys-outline);
+  --paper: var(--sys-bg);
+  --surface: var(--sys-surface);
+  --surface-2: var(--sys-surface-variant);
+  --accent: var(--sys-primary);
+  --accent-ink: var(--sys-on-primary);
+  --accent-soft: var(--sys-primary-container);
+
+  --crit: var(--sys-error);
+  --crit-soft: var(--sys-error-container);
+  --warn: var(--sys-warning);
+  --warn-soft: var(--sys-warning-container);
+  --watch: #e0bf4e;
+  --watch-soft: #2f2a14;
+  --ok: var(--sys-tertiary);
+  --ok-soft: var(--sys-tertiary-container);
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.35);
+  --shadow-xl: 0 20px 40px rgba(0,0,0,0.55);
+  --shadow: var(--shadow-sm), var(--shadow-md);
+
+  color-scheme: dark;
+}
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -661,6 +931,56 @@ kbd { font-family: var(--f-mono); font-size: 11px; padding: 2px 6px; border: 1px
 .gate.g-crit { background: var(--crit-soft); color: var(--crit); }
 .verdict h2 { font-size: clamp(20px, 2.2vw, 26px); font-weight: 800; margin-top: 6px; }
 .v-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; }
+
+/* ===================== INTEGRIDAD ===================== */
+.drop-zone {
+  border: 2px dashed var(--line); border-radius: var(--r); padding: 32px 24px;
+  background: var(--surface-2); text-align: center; cursor: pointer; transition: border-color .15s, background .15s;
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-soft); }
+.drop-zone:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.drop-text strong { display: block; font-size: 15px; margin-bottom: 4px; }
+.drop-text { color: var(--muted); font-size: 13.5px; }
+.drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.file-labels { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.file-label { font-size: 13px; color: var(--muted); padding: 6px 10px; background: var(--surface-2); border-radius: 6px; border: 1px solid var(--line); }
+
+.status-bar { padding: 8px 12px; background: var(--accent-soft); color: var(--accent); border-radius: 6px; font-size: 13px; font-weight: 600; }
+
+.actions-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.anchor-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.anchor-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+
+.alert { border-radius: var(--r); padding: 12px 16px; font-size: 13.5px; }
+.alert.ok { background: var(--ok-soft); color: var(--ok); border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent); }
+.alert.warn { background: var(--warn-soft); color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); }
+.alert.error { background: var(--crit-soft); color: var(--crit); border: 1px solid color-mix(in srgb, var(--crit) 35%, transparent); }
+.alert pre { margin: 8px 0 0; font-size: 11.5px; overflow-x: auto; background: var(--surface-2); padding: 8px; border-radius: 4px; }
+.alert a { color: var(--accent); font-weight: 600; }
+
+.hash-row { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 4px 0; font-size: 13px; }
+.hash-row .k { color: var(--muted); font-size: 12px; }
+.hash-row .v { font-family: var(--f-mono); font-size: 12px; word-break: break-all; }
+
+.diff-counts { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 650; }
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.pill.crit { background: var(--crit-soft); color: var(--crit); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.info { background: var(--surface-2); color: var(--muted); }
+
+#integrity-diff-tbody tr { cursor: default; }
+#integrity-diff-tbody td { font-size: 12.5px; }
+.severity-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; flex-shrink: 0; }
+.severity-dot.critical { background: var(--crit); }
+.severity-dot.warning { background: var(--warn); }
+.severity-dot.info { background: var(--muted); }
+.severity-badge { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.severity-badge.critical { background: var(--crit-soft); color: var(--crit); }
+.severity-badge.warning { background: var(--warn-soft); color: var(--warn); }
+.severity-badge.info { background: var(--surface-2); color: var(--muted); }
+
+#integrity-explanation { white-space: pre-wrap; font-family: var(--f-body); line-height: 1.55; padding: 12px 14px; background: var(--surface-2); border-radius: 6px; border: 1px solid var(--line); }
 .v-list li { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
 .v-list .sh { font-size: 12px; }
 .v-list .c { font-variant-numeric: tabular-nums; font-weight: 650; }
